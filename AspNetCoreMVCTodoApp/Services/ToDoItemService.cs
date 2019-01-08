@@ -22,6 +22,9 @@ namespace AspNetCoreMVCTodoApp.Services
             newItem.Id = Guid.NewGuid();
             newItem.IsDone = false;
             
+            if(newItem.DueAt < DateTime.Now.Date)
+                return false;
+                
             _dbContext.Items.Add(newItem);
 
             var saveResult = await _dbContext.SaveChangesAsync();
