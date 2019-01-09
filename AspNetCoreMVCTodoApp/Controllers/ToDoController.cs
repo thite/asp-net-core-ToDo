@@ -28,6 +28,7 @@ namespace AspNetCoreMVCTodoApp.Controllers
             return View(model);
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddItem(Models.ToDoItem newItem)
         {
             if(!ModelState.IsValid)
