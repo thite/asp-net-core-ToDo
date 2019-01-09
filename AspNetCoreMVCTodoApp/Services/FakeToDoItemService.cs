@@ -7,7 +7,7 @@ namespace AspNetCoreMVCTodoApp.Services
 {
     public class FakeToDoItemService : IToDoItemService
     {
-        public async Task<bool> AddItemAsync(ToDoItem newItem)
+        public Task<bool> AddItemAsync(ToDoItem newItem)
        {
             throw new Exception();
        }
