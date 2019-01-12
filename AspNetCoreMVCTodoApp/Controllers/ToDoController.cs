@@ -44,6 +44,11 @@ namespace AspNetCoreMVCTodoApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Test()
+        {
+            throw new InvalidOperationException("This operation is invalid!");
+        }
     }
 
 }
