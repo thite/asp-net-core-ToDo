@@ -25,5 +25,20 @@ namespace AspNetCoreMVCTodoApp.Services
 
             return Task.FromResult(new[] {item1,item2});
         }
+
+        Task<bool> IToDoItemService.AddItemAsync(ToDoItem newItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ToDoItem[]> IToDoItemService.GetIncompleteItemAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IToDoItemService.MarkDoneAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

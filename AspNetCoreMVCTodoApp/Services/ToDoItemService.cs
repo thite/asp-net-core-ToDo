@@ -36,5 +36,20 @@ namespace AspNetCoreMVCTodoApp.Services
         {
            return await _dbContext.Items.Where(x => x.IsDone == false).ToArrayAsync();
         }
+
+        public async Task<bool> MarkDoneAsync(Guid id)
+        {
+            //throw new NotImplementedException();
+            var item = await _dbContext.Items
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync();
+
+            if (item == null) return false;
+
+            item.IsDone = true;
+
+            var saveResult = await _dbContext.SaveChangesAsync();
+            return saveResult == 1; //return true if one entity is updated.
+        }
     }
 }
