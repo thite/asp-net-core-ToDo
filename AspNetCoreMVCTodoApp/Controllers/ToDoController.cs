@@ -21,38 +21,16 @@ namespace AspNetCoreMVCTodoApp.Controllers
             _userManager = userManager;
             
         }
-
-
-        /// <summary>
-        /// index without user managment
-        /// </summary>
-        /// <returns></returns>
-        /*
-         * 
-         * public async Task<IActionResult> Index()
-        {
-            //Get to-do items from database
-            var items = await _toDoItemService.GetIncompleteItemAsync();
-
-            //put items in model
-            var model = new Models.ToDoViewModel(){
-                Items = items
-            };
-
-            //render view using model
-            return View(model);
-        }
-        */
-
-        
+         
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index()
         {
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null) { return Challenge(); }
 
-            //Get to-do items from database
-            //var items = await _toDoItemService.GetIncompleteItemAsync(currentUser);
-            var items = await _toDoItemService.GetIncompleteItemAsync();
+            //Get to-do items from database for current logged in user
+            var items = await _toDoItemService.GetIncompleteItemAsync(currentUser);
+            //var items = await _toDoItemService.GetIncompleteItemAsync();
 
             //put items in model
             var model = new Models.ToDoViewModel()
@@ -72,8 +50,12 @@ namespace AspNetCoreMVCTodoApp.Controllers
                 RedirectToAction("Index");
             }
 
-            var success = await _toDoItemService.AddItemAsync(newItem);
-            if(!success)
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null) { return Challenge(); }
+
+            var success = await _toDoItemService.AddItemAsync(newItem,currentUser);
+
+            if (!success)
             {
                 return BadRequest("Could not add item");
             }
@@ -89,7 +71,10 @@ namespace AspNetCoreMVCTodoApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            var successful = await _toDoItemService.MarkDoneAsync(id);
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null) { return Challenge(); }
+
+            var successful = await _toDoItemService.MarkDoneAsync(id,currentUser);
 
             if(!successful)
             {

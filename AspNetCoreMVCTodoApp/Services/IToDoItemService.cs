@@ -12,6 +12,8 @@ namespace AspNetCoreMVCTodoApp.Services
 
         Task<bool> AddItemAsync(Models.ToDoItem newItem);
         Task<bool> MarkDoneAsync(Guid id);
-        Task GetIncompleteItemAsync(IdentityUser currentUser);
+        Task<ToDoItem[]> GetIncompleteItemAsync(IdentityUser currentUser);
+        Task<bool> AddItemAsync(ToDoItem newItem, IdentityUser currentUser);
+        Task<bool> MarkDoneAsync(Guid id, IdentityUser currentUser);
     }
 }

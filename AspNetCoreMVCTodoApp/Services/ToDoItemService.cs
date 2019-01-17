@@ -33,14 +33,31 @@ namespace AspNetCoreMVCTodoApp.Services
             return saveResult==1;
         }
 
+        public async Task<bool> AddItemAsync(ToDoItem newItem, IdentityUser currentUser)
+        {
+            newItem.Id = Guid.NewGuid();
+            newItem.IsDone = false;
+            newItem.UserId = currentUser.Id;
+
+            if (newItem.DueAt < DateTime.Now.Date)
+                return false;
+
+            _dbContext.Items.Add(newItem);
+            var saveResult = await _dbContext.SaveChangesAsync();
+
+            return saveResult == 1;
+            
+        }
+
         public async Task<ToDoItem[]> GetIncompleteItemAsync()
         {
            return await _dbContext.Items.Where(x => x.IsDone == false).ToArrayAsync();
         }
 
-        public Task GetIncompleteItemAsync(IdentityUser currentUser)
+        public async Task<ToDoItem[]> GetIncompleteItemAsync(IdentityUser currentUser)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Items.Where(x => x.IsDone == false && x.UserId == currentUser.Id).ToArrayAsync();
+            //throw new NotImplementedException();
         }
 
         public async Task<bool> MarkDoneAsync(Guid id)
@@ -56,6 +73,19 @@ namespace AspNetCoreMVCTodoApp.Services
 
             var saveResult = await _dbContext.SaveChangesAsync();
             return saveResult == 1; //return true if one entity is updated.
+        }
+
+        public async Task<bool> MarkDoneAsync(Guid id, IdentityUser currentUser)
+        {
+            var item = await _dbContext.Items.Where(x => x.Id == id && x.UserId==currentUser.Id).SingleOrDefaultAsync();
+
+            if (item == null) return false;
+
+            item.IsDone = true;
+
+            var saveResult = await _dbContext.SaveChangesAsync();
+            return saveResult == 1;
+            //throw new NotImplementedException();
         }
     }
 }
