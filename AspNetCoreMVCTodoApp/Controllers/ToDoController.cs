@@ -22,7 +22,7 @@ namespace AspNetCoreMVCTodoApp.Controllers
             
         }
          
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Index()
         {
             var currentUser = await _userManager.GetUserAsync(User);
