@@ -5,6 +5,7 @@ using System.Linq;
 using AspNetCoreMVCTodoApp.Models;
 using AspNetCoreMVCTodoApp.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCoreMVCTodoApp.Services
 {
@@ -35,6 +36,11 @@ namespace AspNetCoreMVCTodoApp.Services
         public async Task<ToDoItem[]> GetIncompleteItemAsync()
         {
            return await _dbContext.Items.Where(x => x.IsDone == false).ToArrayAsync();
+        }
+
+        public Task GetIncompleteItemAsync(IdentityUser currentUser)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> MarkDoneAsync(Guid id)

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using AspNetCoreMVCTodoApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCoreMVCTodoApp.Services
 {
@@ -11,5 +12,6 @@ namespace AspNetCoreMVCTodoApp.Services
 
         Task<bool> AddItemAsync(Models.ToDoItem newItem);
         Task<bool> MarkDoneAsync(Guid id);
+        Task GetIncompleteItemAsync(IdentityUser currentUser);
     }
 }

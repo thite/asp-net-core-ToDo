@@ -3,24 +3,60 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using AspNetCoreMVCTodoApp.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace AspNetCoreMVCTodoApp.Controllers
 {
+    [Authorize]
     public class ToDoController:Controller
     {
         private readonly IToDoItemService _toDoItemService;
-        public ToDoController(IToDoItemService toDoItems)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public ToDoController(IToDoItemService toDoItems, UserManager<IdentityUser> userManager)
         {
             _toDoItemService = toDoItems;
+            _userManager = userManager;
+            
         }
-        public async Task<IActionResult> Index()
+
+
+        /// <summary>
+        /// index without user managment
+        /// </summary>
+        /// <returns></returns>
+        /*
+         * 
+         * public async Task<IActionResult> Index()
         {
             //Get to-do items from database
             var items = await _toDoItemService.GetIncompleteItemAsync();
 
             //put items in model
             var model = new Models.ToDoViewModel(){
+                Items = items
+            };
+
+            //render view using model
+            return View(model);
+        }
+        */
+
+        
+        public async Task<IActionResult> Index()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null) { return Challenge(); }
+
+            //Get to-do items from database
+            var items = await _toDoItemService.GetIncompleteItemAsync(currentUser);
+            //var items = await _toDoItemService.GetIncompleteItemAsync();
+
+            //put items in model
+            var model = new Models.ToDoViewModel()
+            {
                 Items = items
             };
 
