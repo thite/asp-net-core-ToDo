@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AspNetCoreMVCTodoApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCoreMVCTodoApp.Services
 {
@@ -24,6 +25,11 @@ namespace AspNetCoreMVCTodoApp.Services
             };
 
             return Task.FromResult(new[] {item1,item2});
+        }
+
+        public Task GetIncompleteItemAsync(IdentityUser currentUser)
+        {
+            throw new NotImplementedException();
         }
 
         Task<bool> IToDoItemService.AddItemAsync(ToDoItem newItem)

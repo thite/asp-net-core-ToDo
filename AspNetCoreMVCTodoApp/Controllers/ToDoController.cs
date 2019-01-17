@@ -51,8 +51,8 @@ namespace AspNetCoreMVCTodoApp.Controllers
             if (currentUser == null) { return Challenge(); }
 
             //Get to-do items from database
-            var items = await _toDoItemService.GetIncompleteItemAsync(currentUser);
-            //var items = await _toDoItemService.GetIncompleteItemAsync();
+            //var items = await _toDoItemService.GetIncompleteItemAsync(currentUser);
+            var items = await _toDoItemService.GetIncompleteItemAsync();
 
             //put items in model
             var model = new Models.ToDoViewModel()
